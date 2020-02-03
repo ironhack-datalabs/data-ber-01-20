@@ -7,17 +7,19 @@
 Run your first SQL commands! In this lab, we will practice selecting and projecting data. You can finish all questions with only those clauses:
 - `SELECT`
 - `SELECT DISTINCT`
-- `COUNT`
 - `FROM`
 - `WHERE`
 - `ORDER BY`
 - `GROUP BY`
-- `SUM`
 - `LIMIT`
+
+and aggregate functions:
+- `COUNT`
+- `SUM`
 
 Please submit your solutions in a text file `solutions.sql`.
 
-### 1. From the `order_items` table, find the price of the highest priced order and lowest price order.
+### 1. From the `order_items` table, find the price of the highest priced order item and lowest price order item.
 
 Result:
 ```
@@ -26,15 +28,10 @@ Result:
 ```
 Solution:
 ```sql
-SELECT *
-FROM olist.order_items
-ORDER BY price DESC
-LIMIT 100;
-
-SELECT *
-FROM olist.order_items
-ORDER BY price
-LIMIT 100;
+SELECT
+    MIN(price)  AS min_price,
+    MAX(price) AS max_price
+FROM olist.order_items;
 ```
 
 ### 2. From the `order_items` table, what is range of the shipping_limit_date of the orders?
@@ -55,7 +52,7 @@ ORDER BY shipping_limit_date DESC
 LIMIT 100;
 ```
 
-### 3. From the `customers` table, find the states with the greatest number of customers.
+### 3. From the `customers` table, find the 3 states with the greatest number of customers.
 Result:
 ```
 SP, RJ, MG
@@ -65,12 +62,12 @@ Solution:
 SELECT
     customer_state, COUNT(customer_state) as num_cust_state
 FROM olist.customers
-    GROUP BY customer_state
-    ORDER BY num_cust_state DESC
-LIMIT 10;
+GROUP BY customer_state
+ORDER BY num_cust_state DESC
+LIMIT 3;
 ```
 
-### 4. From the `customers` table, within the state with the greatest number of customers, find the cities with the greatest number of customers.
+### 4. From the `customers` table, within the state with the greatest number of customers, find the 3 cities with the greatest number of customers.
 Result:
 ```
 sao paulo, campinas and guarulhos
@@ -84,7 +81,8 @@ FROM olist.customers
 WHERE customer_state = 'SP'
 GROUP BY customer_state,
          customer_city
-ORDER BY COUNT(customer_city) DESC;
+ORDER BY COUNT(customer_city) DESC
+LIMIT 3;
 ```
 
 ### 5. From the `closed_deals` table, how many distinct business segments are there (not including null)?
@@ -94,10 +92,8 @@ Result:
 ```
 Solution:
 ```sql
-SELECT loan_id 
-FROM loan
-ORDER BY payments ASC 
-LIMIT 1;
+SELECT COUNT(DISTINCT business_segment) AS unique_business_segment
+FROM olist.closed_deals;
 ```
 
 ### 6. From the `closed_deals` table, sum the declared_monthly_revenue for duplicate row values in business_segment and find the 3 business segments with the highest declared monthly revenue (of those that declared revenue).
@@ -111,7 +107,8 @@ SELECT business_segment,
    SUM(declared_monthly_revenue) AS total_declared_monthly_revenue
 FROM olist.closed_deals
 GROUP BY business_segment
-ORDER BY total_declared_monthly_revenue DESC;
+ORDER BY total_declared_monthly_revenue DESC
+LIMIT 3;
 ```
 
 ### 7. From the `order_reviews` table, find the total number of distinct review score values.
@@ -149,5 +146,6 @@ Solution:
 SELECT COUNT(review_id), review_score
 FROM olist.order_reviews
 GROUP BY review_score
-ORDER BY COUNT(review_id) DESC;
+ORDER BY COUNT(review_id) DESC
+LIMIT 1;
 ```
