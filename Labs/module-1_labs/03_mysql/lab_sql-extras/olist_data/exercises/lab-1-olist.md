@@ -12,6 +12,8 @@ Run your first SQL commands! In this lab, we will practice selecting and project
 - `ORDER BY`
 - `GROUP BY`
 - `LIMIT`
+- `MIN`
+- `MAX`
 
 and aggregate functions:
 - `COUNT`
