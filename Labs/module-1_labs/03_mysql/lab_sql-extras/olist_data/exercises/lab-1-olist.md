@@ -41,15 +41,10 @@ Result:
 ```
 Solution:
 ```sql
-SELECT *
-FROM olist.order_items
-ORDER BY shipping_limit_date
-LIMIT 10;
-
-SELECT *
-FROM olist.order_items
-ORDER BY shipping_limit_date DESC
-LIMIT 100;
+SELECT
+    MIN(shipping_limit_date)  AS min_shipping_date,
+    MAX(shipping_limit_date) AS max_shipping_date
+FROM olist.order_items;
 ```
 
 ### 3. From the `customers` table, find the 3 states with the greatest number of customers.
